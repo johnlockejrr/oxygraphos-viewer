@@ -6,6 +6,12 @@
 
 **Repository:** [github.com/johnlockejrr/oxygraphos-viewer](https://github.com/johnlockejrr/oxygraphos-viewer)
 
+## Screenshot
+
+Example of the main UI (thumbnails, scan, and overlays). The image is stored at **`static/screenshot.png`** (repository root); commit it so the preview below works on GitHub and in local Markdown viewers.
+
+![Oxygraphos Viewer — main interface](static/screenshot.png)
+
 ---
 
 ## Features
