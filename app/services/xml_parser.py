@@ -14,6 +14,18 @@ from app.utils.namespace import detect_format, local_name
 
 logger = logging.getLogger(__name__)
 
+# ALTO <Tags> section: tag definitions referenced by TAGREFS (IDs point here).
+_ALTO_TAGS_SECTION_TYPES = frozenset(
+    {
+        "Tag",
+        "OtherTag",
+        "LayoutTag",
+        "StructureTag",
+        "ParagraphTag",
+        "ContentTag",
+    }
+)
+
 PAGE_REGION_TYPES = frozenset(
     {
         "TextRegion",
@@ -153,16 +165,33 @@ def _parse_page(root: etree._Element, doc_id: str, image_path: Path) -> OverlayD
     )
 
 
+def _alto_header_tag_id(el: etree._Element) -> str | None:
+    return el.get("ID") or el.get("id")
+
+
+def _alto_header_tag_label(el: etree._Element) -> str:
+    return (
+        el.get("LABEL")
+        or el.get("label")
+        or el.get("TYPE")
+        or el.get("type")
+        or ""
+    ).strip()
+
+
 def _alto_build_tag_map(root: etree._Element) -> dict[str, str]:
+    """Map tag @ID → display label from the ALTO <Tags> header (Tag, OtherTag, …)."""
     tags: dict[str, str] = {}
-    for el in root.iter():
-        if local_name(el) != "Tag":
-            continue
-        tid = el.get("ID")
-        if not tid:
-            continue
-        lab = el.get("LABEL") or el.get("TYPE") or ""
-        tags[tid] = lab
+    for tags_el in root.xpath("//*[local-name()='Tags']"):
+        for el in tags_el.iter():
+            if local_name(el) not in _ALTO_TAGS_SECTION_TYPES:
+                continue
+            tid = _alto_header_tag_id(el)
+            if not tid:
+                continue
+            lab = _alto_header_tag_label(el)
+            if lab:
+                tags[tid] = lab
     return tags
 
 
@@ -179,10 +208,7 @@ def _alto_strings_label(line_el: etree._Element) -> str | None:
 
 
 def _alto_line_label(line_el: etree._Element, tag_map: dict[str, str]) -> str | None:
-    sl = _alto_strings_label(line_el)
-    if sl:
-        return sl
-    refs = line_el.get("TAGREFS")
+    refs = line_el.get("TAGREFS") or line_el.get("tagrefs")
     if refs:
         parts = []
         for r in refs.split():
@@ -190,11 +216,14 @@ def _alto_line_label(line_el: etree._Element, tag_map: dict[str, str]) -> str | 
                 parts.append(tag_map[r])
         if parts:
             return " ".join(parts)
+    sl = _alto_strings_label(line_el)
+    if sl:
+        return sl
     return line_el.get("ID")
 
 
 def _alto_block_label(block_el: etree._Element, tag_map: dict[str, str]) -> str | None:
-    refs = block_el.get("TAGREFS")
+    refs = block_el.get("TAGREFS") or block_el.get("tagrefs")
     if refs:
         parts = []
         for r in refs.split():

@@ -41,6 +41,19 @@ def test_parse_alto_fixture(alto_pair: tuple[Path, Path]):
     assert len(b.textlines[0].baseline.points) == 2
 
 
+def test_parse_alto_other_tag_header_resolves_tagrefs(allowed_root: Path):
+    fixtures = Path(__file__).parent / "fixtures"
+    img_path = allowed_root / "sample_alto_ot.jpg"
+    Image.new("RGB", (1000, 2000), color=(20, 20, 30)).save(img_path, "JPEG")
+    xml_path = allowed_root / "sample_alto_other_tag.xml"
+    xml_path.write_text((fixtures / "sample_alto_other_tag.xml").read_text(encoding="utf-8"), encoding="utf-8")
+    data = parse_xml(xml_path, img_path, "alto_ot")
+    assert data.format == "ALTO"
+    b = data.regions[0]
+    assert b.label == "MainZone"
+    assert b.textlines[0].label == "DefaultLine"
+
+
 def test_page_textregion_without_region_coords_keeps_textlines(allowed_root: Path):
     """eScriptorium dummy TextRegions often omit <Coords> but contain TextLines."""
     img_path = allowed_root / "dummy.jpg"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/v4/alto.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <fileName>sample_alto_ot.jpg</fileName>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT141" LABEL="MainZone" DESCRIPTION="block type MainZone" />
+    <OtherTag ID="LT20" LABEL="DefaultLine" DESCRIPTION="line type DefaultLine" />
+  </Tags>
+  <Layout>
+    <Page WIDTH="1000" HEIGHT="2000">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="1000" HEIGHT="2000">
+        <TextBlock ID="b1" HPOS="100" VPOS="100" WIDTH="800" HEIGHT="100" TAGREFS="BT141">
+          <TextLine ID="line1" HPOS="110" VPOS="110" WIDTH="700" HEIGHT="40" TAGREFS="LT20" BASELINE="120 130 800 130">
+            <String CONTENT="hello" HPOS="110" VPOS="110" WIDTH="50" HEIGHT="40"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
