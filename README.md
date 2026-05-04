@@ -155,7 +155,7 @@ PYTHONPATH=. .venv/bin/pytest tests/ -v
 ## Project layout
 
 ```text
-app/                 # FastAPI app: routers, services, XML parsing, thumbnails
+app/               # FastAPI app: routers, services, XML parsing, thumbnails
 frontend/          # SvelteKit UI (viewer, sidebar, API client, state)
 tests/             # pytest + httpx
 scripts/           # helper scripts
