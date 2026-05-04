@@ -1,0 +1,52 @@
+# --- Python ---
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# --- Env / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Node / frontend ---
+node_modules/
+frontend/.svelte-kit/
+frontend/build/
+frontend/package/
+frontend/vite.config.js.timestamp-*
+frontend/vite.config.ts.timestamp-*
+
+# --- App caches (if THUMB_CACHE_DIR or similar is under the repo) ---
+.pageviewer_cache/
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs / temp ---
+*.log
+tmp/
+temp/
+*.tmp
+.cache/
